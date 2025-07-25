@@ -11,7 +11,7 @@ Driver for MCP9600/MCP9601, thermocouple EMF to temperature converter.
 ## Installation
 
 ```sh
-idf.py add-dependency "esp-idf-lib/mcp960x^1.0.0
+idf.py add-dependency esp-idf-lib/mcp960x^1.0.0
 ```
 
 ## Support
