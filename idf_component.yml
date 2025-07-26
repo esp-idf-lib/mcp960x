@@ -1,5 +1,5 @@
 ---
-version: 1.0.3
+version: 1.0.4
 description: Driver for MCP9600/MCP9601, thermocouple EMF to temperature converter
 license: BSD-3
 targets:
