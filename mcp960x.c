@@ -240,23 +240,23 @@ esp_err_t mcp960x_get_sensor_config(mcp960x_t *dev, mcp960x_thermocouple_t *th, 
 }
 
 esp_err_t mcp960x_set_device_config(mcp960x_t *dev, mcp960x_mode_t mode, mcp960x_burst_samples_t bs,
-        mcp960x_adc_resolution_t adc_res, mcp960x_tc_resolution_t tc_res)
+                                    mcp960x_adc_resolution_t adc_res, mcp960x_tc_resolution_t tc_res)
 {
     CHECK_ARG(dev
-            && mode <= MCP960X_MODE_BURST
-            && bs <= MCP960X_SAMPLES_128
-            && adc_res <= MCP960X_ADC_RES_12
-            && tc_res <= MCP960X_TC_RES_0_25);
+              && mode <= MCP960X_MODE_BURST
+              && bs <= MCP960X_SAMPLES_128
+              && adc_res <= MCP960X_ADC_RES_12
+              && tc_res <= MCP960X_TC_RES_0_25);
 
     return write_reg_8_lock(dev, REG_DEV_CONF,
-            (mode << BIT_DC_MODE) |
-            (bs << BIT_DC_SAMPLES) |
-            (adc_res << BIT_DC_ADC_RES) |
-            (tc_res << BIT_DC_SENS_RES));
+                            (mode << BIT_DC_MODE) |
+                            (bs << BIT_DC_SAMPLES) |
+                            (adc_res << BIT_DC_ADC_RES) |
+                            (tc_res << BIT_DC_SENS_RES));
 }
 
 esp_err_t mcp960x_get_device_config(mcp960x_t *dev, mcp960x_mode_t *mode, mcp960x_burst_samples_t *bs,
-        mcp960x_adc_resolution_t *adc_res, mcp960x_tc_resolution_t *tc_res)
+                                    mcp960x_adc_resolution_t *adc_res, mcp960x_tc_resolution_t *tc_res)
 {
     CHECK_ARG(dev && (mode || bs || adc_res || tc_res));
 
@@ -322,7 +322,7 @@ esp_err_t mcp960x_get_ambient_temp(mcp960x_t *dev, float *t)
 }
 
 esp_err_t mcp960x_get_status(mcp960x_t *dev, bool *temp_ready, bool *burst_ready, mcp960x_status_t *status,
-        bool *alert1, bool *alert2, bool *alert3, bool *alert4)
+                             bool *alert1, bool *alert2, bool *alert3, bool *alert4)
 {
     CHECK_ARG(dev && (temp_ready || burst_ready || status || alert1 || alert2 || alert3 || alert4));
 
@@ -334,7 +334,7 @@ esp_err_t mcp960x_get_status(mcp960x_t *dev, bool *temp_ready, bool *burst_ready
     if (burst_ready)
         *burst_ready = (r >> BIT_ST_BURST) & 1;
     if (status)
-       *status = (r & MASK_ST_MODE) >> BIT_ST_OC;
+        *status = (r & MASK_ST_MODE) >> BIT_ST_OC;
     if (alert1)
         *alert1 = (r >> BIT_ST_ALERT1) & 1;
     if (alert2)
@@ -348,23 +348,23 @@ esp_err_t mcp960x_get_status(mcp960x_t *dev, bool *temp_ready, bool *burst_ready
 }
 
 esp_err_t mcp960x_set_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960x_alert_mode_t mode,
-        mcp960x_alert_level_t active_lvl, mcp960x_alert_temp_dir_t temp_dir, mcp960x_alert_source_t src,
-        float limit, uint8_t hyst)
+                                   mcp960x_alert_level_t active_lvl, mcp960x_alert_temp_dir_t temp_dir, mcp960x_alert_source_t src,
+                                   float limit, uint8_t hyst)
 {
     CHECK_ARG(dev
-            && alert <= MCP960X_ALERT_4
-            && mode <= MCP960X_ALERT_INT
-            && active_lvl <= MCP960X_ACTIVE_HIGH
-            && temp_dir <= MCP960X_RISING
-            && src <= MCP960X_ALERT_SRC_TC);
+              && alert <= MCP960X_ALERT_4
+              && mode <= MCP960X_ALERT_INT
+              && active_lvl <= MCP960X_ACTIVE_HIGH
+              && temp_dir <= MCP960X_RISING
+              && src <= MCP960X_ALERT_SRC_TC);
 
     I2C_DEV_TAKE_MUTEX(&dev->i2c_dev);
     I2C_DEV_CHECK(&dev->i2c_dev, write_reg_8(dev, REG_ALERT_CONF + alert,
-            (mode > MCP960X_ALERT_DISABLED ? BV(BIT_AC_OUT_EN) : 0) |
-            (mode > MCP960X_ALERT_DISABLED ? (mode - 1) << BIT_AC_COMP_INT : 0) |
-            (active_lvl << BIT_AC_ACT_LVL) |
-            (temp_dir << BIT_AC_T_DIR) |
-            (src << BIT_AC_T_SRC)));
+                                             (mode > MCP960X_ALERT_DISABLED ? BV(BIT_AC_OUT_EN) : 0) |
+                                             (mode > MCP960X_ALERT_DISABLED ? (mode - 1) << BIT_AC_COMP_INT : 0) |
+                                             (active_lvl << BIT_AC_ACT_LVL) |
+                                             (temp_dir << BIT_AC_T_DIR) |
+                                             (src << BIT_AC_T_SRC)));
     I2C_DEV_CHECK(&dev->i2c_dev, write_reg_8(dev, REG_ALERT_HYST + alert, hyst));
     I2C_DEV_CHECK(&dev->i2c_dev, write_reg_16_float(dev, REG_ALERT_LIM + alert, limit));
     I2C_DEV_GIVE_MUTEX(&dev->i2c_dev);
@@ -373,11 +373,11 @@ esp_err_t mcp960x_set_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960
 }
 
 esp_err_t mcp960x_get_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960x_alert_mode_t *mode,
-        mcp960x_alert_level_t *active_lvl, mcp960x_alert_temp_dir_t *temp_dir, mcp960x_alert_source_t *src,
-        float *limit, uint8_t *hyst)
+                                   mcp960x_alert_level_t *active_lvl, mcp960x_alert_temp_dir_t *temp_dir, mcp960x_alert_source_t *src,
+                                   float *limit, uint8_t *hyst)
 {
     CHECK_ARG(dev && alert <= MCP960X_ALERT_4
-            && (mode || active_lvl || temp_dir || src || limit || hyst));
+              && (mode || active_lvl || temp_dir || src || limit || hyst));
 
     I2C_DEV_TAKE_MUTEX(&dev->i2c_dev);
 

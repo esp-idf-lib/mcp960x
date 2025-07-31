@@ -62,7 +62,8 @@ extern "C" {
 /**
  * Thermocouple type
  */
-typedef enum {
+typedef enum
+{
     MCP960X_TYPE_K = 0, /**< default */
     MCP960X_TYPE_J,
     MCP960X_TYPE_T,
@@ -76,7 +77,8 @@ typedef enum {
 /**
  * ADC measurement resolution
  */
-typedef enum {
+typedef enum
+{
     MCP960X_ADC_RES_18 = 0, /**< 18 bits / 2 uV, 320 ms, default */
     MCP960X_ADC_RES_16,     /**< 16 bits / 8 uV, 80 ms */
     MCP960X_ADC_RES_14,     /**< 14 bits / 32 uV, 20 ms */
@@ -86,7 +88,8 @@ typedef enum {
 /**
  * Number of temperature samples in burst mode
  */
-typedef enum {
+typedef enum
+{
     MCP960X_SAMPLES_1 = 0, /**< default */
     MCP960X_SAMPLES_2,
     MCP960X_SAMPLES_4,
@@ -100,7 +103,8 @@ typedef enum {
 /**
  * Operational mode
  */
-typedef enum {
+typedef enum
+{
     MCP960X_MODE_NORMAL = 0, /**< default */
     MCP960X_MODE_SHUTDOWN,
     MCP960X_MODE_BURST,
@@ -109,7 +113,8 @@ typedef enum {
 /**
  * Cold-Junction/Ambient sensor resolution
  */
-typedef enum {
+typedef enum
+{
     MCP960X_TC_RES_0_0625 = 0, /**< 0.0625°C, conversion time: 250 ms */
     MCP960X_TC_RES_0_25,       /**< 0.25°C, conversion time: 63 ms */
 } mcp960x_tc_resolution_t;
@@ -117,7 +122,8 @@ typedef enum {
 /**
  * Device status
  */
-typedef enum {
+typedef enum
+{
     MCP960X_OK = 0,        /**< Device is functioning normally */
     MCP960X_OPEN_CIRCUIT,  /**< Open circuit detected on thermocouple input (MCP9601 only) */
     MCP960X_SHORT_CIRCUIT, /**< Short circuit detected on thermocouple input (MCP9601 only) */
@@ -126,7 +132,8 @@ typedef enum {
 /**
  * Alert
  */
-typedef enum {
+typedef enum
+{
     MCP960X_ALERT_1 = 0,
     MCP960X_ALERT_2,
     MCP960X_ALERT_3,
@@ -136,7 +143,8 @@ typedef enum {
 /**
  * Alert mode
  */
-typedef enum {
+typedef enum
+{
     MCP960X_ALERT_DISABLED, /**< Alert disabled */
     MCP960X_ALERT_COMP,     /**< Comparator mode */
     MCP960X_ALERT_INT,      /**< Interrupt mode */
@@ -145,7 +153,8 @@ typedef enum {
 /**
  * Alert output active level
  */
-typedef enum {
+typedef enum
+{
     MCP960X_ACTIVE_LOW = 0, /**< Active-low */
     MCP960X_ACTIVE_HIGH     /**< Active-high */
 } mcp960x_alert_level_t;
@@ -153,7 +162,8 @@ typedef enum {
 /**
  * Alert temperature direction
  */
-typedef enum {
+typedef enum
+{
     MCP960X_FALLING = 0, /**< Alert limit for falling or cooling temperatures */
     MCP960X_RISING       /**< Alert limit for rising or heating temperatures */
 } mcp960x_alert_temp_dir_t;
@@ -161,7 +171,8 @@ typedef enum {
 /**
  * Alert monitoring source
  */
-typedef enum {
+typedef enum
+{
     MCP960X_ALERT_SRC_TH = 0, /**< Alert monitor for thermocouple temperature TH */
     MCP960X_ALERT_SRC_TC      /**< Alert monitor for cold-junction sensor TC */
 } mcp960x_alert_source_t;
@@ -237,7 +248,7 @@ esp_err_t mcp960x_get_sensor_config(mcp960x_t *dev, mcp960x_thermocouple_t *th, 
  * @return `ESP_OK` on success
  */
 esp_err_t mcp960x_set_device_config(mcp960x_t *dev, mcp960x_mode_t mode, mcp960x_burst_samples_t bs,
-        mcp960x_adc_resolution_t adc_res, mcp960x_tc_resolution_t tc_res);
+                                    mcp960x_adc_resolution_t adc_res, mcp960x_tc_resolution_t tc_res);
 
 /**
  * @brief Get device configuration
@@ -250,7 +261,7 @@ esp_err_t mcp960x_set_device_config(mcp960x_t *dev, mcp960x_mode_t mode, mcp960x
  * @return `ESP_OK` on success
  */
 esp_err_t mcp960x_get_device_config(mcp960x_t *dev, mcp960x_mode_t *mode, mcp960x_burst_samples_t *bs,
-        mcp960x_adc_resolution_t *adc_res, mcp960x_tc_resolution_t *tc_res);
+                                    mcp960x_adc_resolution_t *adc_res, mcp960x_tc_resolution_t *tc_res);
 
 /**
  * @brief Switch device operation mode
@@ -317,7 +328,7 @@ esp_err_t mcp960x_get_ambient_temp(mcp960x_t *dev, float *t);
  * @return `ESP_OK` on success
  */
 esp_err_t mcp960x_get_status(mcp960x_t *dev, bool *temp_ready, bool *burst_ready, mcp960x_status_t *status,
-        bool *alert1, bool *alert2, bool *alert3, bool *alert4);
+                             bool *alert1, bool *alert2, bool *alert3, bool *alert4);
 
 /**
  * @brief Setup temperature alert
@@ -333,8 +344,8 @@ esp_err_t mcp960x_get_status(mcp960x_t *dev, bool *temp_ready, bool *burst_ready
  * @return `ESP_OK` on success
  */
 esp_err_t mcp960x_set_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960x_alert_mode_t mode,
-        mcp960x_alert_level_t active_lvl, mcp960x_alert_temp_dir_t temp_dir, mcp960x_alert_source_t src,
-        float limit, uint8_t hyst);
+                                   mcp960x_alert_level_t active_lvl, mcp960x_alert_temp_dir_t temp_dir, mcp960x_alert_source_t src,
+                                   float limit, uint8_t hyst);
 
 /**
  * @brief Get temperature alert configuration
@@ -350,8 +361,8 @@ esp_err_t mcp960x_set_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960
  * @return `ESP_OK` on success
  */
 esp_err_t mcp960x_get_alert_config(mcp960x_t *dev, mcp960x_alert_t alert, mcp960x_alert_mode_t *mode,
-        mcp960x_alert_level_t *active_lvl, mcp960x_alert_temp_dir_t *temp_dir, mcp960x_alert_source_t *src,
-        float *limit, uint8_t *hyst);
+                                   mcp960x_alert_level_t *active_lvl, mcp960x_alert_temp_dir_t *temp_dir, mcp960x_alert_source_t *src,
+                                   float *limit, uint8_t *hyst);
 
 /**
  * @brief Get alert status

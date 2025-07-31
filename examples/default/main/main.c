@@ -9,24 +9,29 @@
 #define SENSORS_COUNT 4
 
 /* 5 pins for 4 sensors */
-static struct { gpio_num_t sda, scl; } pins[SENSORS_COUNT] = {
+static struct
+{
+    gpio_num_t sda, scl;
+} pins[SENSORS_COUNT] =
+{
 #if defined(CONFIG_IDF_TARGET_ESP8266)
-        { 4, 5 },
-        { 5, 2 },
-        { 2, 14 },
-        { 14, 12 }
+    { 4, 5 },
+    { 5, 2 },
+    { 2, 14 },
+    { 14, 12 }
 #else
-        { 23, 22 },
-        { 22, 21 },
-        { 21, 18 },
-        { 18, 17 }
+    { 23, 22 },
+    { 22, 21 },
+    { 21, 18 },
+    { 18, 17 }
 #endif
 };
 
-static const char * const snames[] = {
-        [MCP960X_OK] = "OK",
-        [MCP960X_OPEN_CIRCUIT] = "Open circuit",
-        [MCP960X_SHORT_CIRCUIT] = "Short circuit",
+static const char * const snames[] =
+{
+    [MCP960X_OK] = "OK",
+    [MCP960X_OPEN_CIRCUIT] = "Open circuit",
+    [MCP960X_SHORT_CIRCUIT] = "Short circuit",
 };
 
 static mcp960x_t sensors[SENSORS_COUNT];
