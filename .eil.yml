@@ -1,7 +1,7 @@
 ---
 name: mcp960x
 description: Driver for MCP9600/MCP9601, thermocouple EMF to temperature converter
-version: 1.0.6
+version: 1.0.7
 groups:
   - temperature
 code_owners: UncleRus
