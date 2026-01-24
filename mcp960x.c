@@ -93,7 +93,7 @@ static const char *TAG = "mcp960x";
 #define CHECK(x) do { esp_err_t __; if ((__ = x) != ESP_OK) return __; } while (0)
 #define CHECK_ARG(VAL) do { if (!(VAL)) return ESP_ERR_INVALID_ARG; } while (0)
 
-#define LSB 0.0625
+#define LSB 0.0625f
 
 inline static uint16_t shuffle(uint16_t x)
 {
@@ -143,14 +143,17 @@ static esp_err_t read_reg_16(mcp960x_t *dev, uint8_t reg, uint16_t *val)
 
 inline static esp_err_t write_reg_16_float(mcp960x_t *dev, uint8_t reg, float val)
 {
-    return write_reg_16(dev, reg, (uint16_t)(val / LSB));
+    int16_t signed_val = (int16_t)(val / LSB);
+    uint16_t raw = *((uint16_t *)&signed_val);
+    return write_reg_16(dev, reg, raw);
 }
 
 static esp_err_t read_reg_16_float(mcp960x_t *dev, uint8_t reg, float *val)
 {
     uint16_t raw;
     CHECK(read_reg_16(dev, reg, &raw));
-    *val = (float)raw * LSB;
+    int16_t signed_raw = *((int16_t *)&raw);
+    *val = (float)signed_raw * LSB;
     return ESP_OK;
 }
 
@@ -427,4 +430,3 @@ esp_err_t mcp960x_clear_alert_int(mcp960x_t *dev, mcp960x_alert_t alert)
 
     return ESP_OK;
 }
-
